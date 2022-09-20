@@ -2,6 +2,12 @@
     "files.associations": {
         "ostream": "cpp",
         "new": "cpp",
-        "iostream": "cpp"
+        "iostream": "cpp",
+        "array": "cpp",
+        "fstream": "cpp",
+        "functional": "cpp",
+        "shared_mutex": "cpp",
+        "sstream": "cpp",
+        "tuple": "cpp"
     }
 }
