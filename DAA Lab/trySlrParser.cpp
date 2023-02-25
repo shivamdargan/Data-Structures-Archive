@@ -1,23 +1,29 @@
-#include<stdio.h>
-#include<stdlib.h>
-#include<string.h>
+#include<bits/stdc++.h>
 
-//Variables used in most of the other modules.
 
 char items[30][100][100];
 char augmented_grammar[100][100], terminals[10], nonterminals[10];
 int no_of_productions = 0, no_of_states = 0, no_of_items[30], no_of_terminals = 0, no_of_nonterminals = 0;
 
 
-//Variables used only in this module.
 
 int state_index = 0, goto_state_index = 0, closure_item_index = 0;
 
-int check(char c) {
+int isterminal(char s) {
 	int i;
 
 	for(i = 0; i < no_of_terminals; i++)
-		if(terminals[i] == c)
+		if(s == terminals[i])
+			return 1;
+	
+	return 0;
+}
+
+int isNonTerminal(char c, int index) {
+	int i;
+
+	for(i = 0; i < index; i++)
+		if(nonterminals[i] == c)
 			return 1;
 
 	return 0;
@@ -33,7 +39,7 @@ void generate_terminals() {
 
 		for(; augmented_grammar[i][j] != '\0'; j++) {
 			if(augmented_grammar[i][j] < 65 || augmented_grammar[i][j] > 90) {
-				if(!check(augmented_grammar[i][j])) {
+				if(!isterminal(augmented_grammar[i][j])) {
 					terminals[index] = augmented_grammar[i][j];
 					no_of_terminals++;
 					index++;
@@ -44,21 +50,13 @@ void generate_terminals() {
 
 }	
 
-int check2(char c, int index) {
-	int i;
 
-	for(i = 0; i < index; i++)
-		if(nonterminals[i] == c)
-			return 1;
-
-	return 0;
-}
 
 void generate_nonterminals() {
 	int i, index = 0;
 	
 	for(i = 0; i < no_of_productions; i++)
-		if(!check2(augmented_grammar[i][0], index)) {
+		if(!isNonTerminal(augmented_grammar[i][0], index)) {
 			nonterminals[index] = augmented_grammar[i][0];
 			index++;
 		}
@@ -86,26 +84,18 @@ void generate_item(char *s, char *t) {
 	t[i+1] = '\0';
 }
 
-int item_found(char *s) {	//Check for items in a state.
+int item_found(char *s) {	
 	int i;
 
 	for(i = 0; i < closure_item_index; i++) {
-		if(!strcmp(s, items[state_index][i]))	//If the strings match.
+		if(!strcmp(s, items[state_index][i]))	
 			return 1;
 	}
 
 	return 0;
 }
 
-int isterminal(char s) {
-	int i;
 
-	for(i = 0; i < no_of_terminals; i++)
-		if(s == terminals[i])
-			return 1;
-	
-	return 0;
-}
 
 void closure(char *s) {
 	int i, j;
@@ -120,13 +110,13 @@ void closure(char *s) {
 
 	}
 
-	if(s[i] == s[0] && s[i-2] == '>')	//To avoid infinite loop due to left recursion.
+	if(s[i] == s[0] && s[i-2] == '>')	
 		return;
 
 	if(isterminal(s[i]))
 		return;
 	
-	else 	{	//Not a terminal
+	else 	{	
 		for(j = 0; j < no_of_productions; j++) {
 			char temp[100];
 	
@@ -138,7 +128,7 @@ void closure(char *s) {
 	}
 }
 
-int Goto1(char s, char temp[][100]) {	//Find Goto on symbol s. GOTO(goto_state_index, s)
+int Goto1(char s, char temp[][100]) {	
 	int i, j;
 	int n = 0;
 	char t, temp2[100];
@@ -168,11 +158,11 @@ int Goto1(char s, char temp[][100]) {	//Find Goto on symbol s. GOTO(goto_state_i
 	return n;
 }
 
-int state_found(char *s) {	//Checks for existance of same state.
+int state_found(char *s) {	
 	int i;
 	
 	for(i = 0; i < state_index; i++) {
-		if(!strcmp(s, items[i][0]))	//Compare with the first item of each state.
+		if(!strcmp(s, items[i][0]))
 			return 1;
 	}
 
@@ -291,42 +281,8 @@ void start() {
 	print();
 }
 
-void Goto(int i, int item, char *temp) {	//Computes goto for 'item'th item of 'i'th state.
-	char t;
-
-	strcpy(temp, items[i][item]);
-
-	for(i = 0; temp[i] != '\0'; i++)
-		if(temp[i] == '.') {
-			t = temp[i];
-			temp[i] = temp[i+1];
-			temp[i+1] = t;
-			break;
-		}
-}
-
-int get_pos(int flag, char symbol) {	//Returns index of a terminal or a non-terminal from the corresponding arrays.
-	int i;
-
-	if(flag == 0)
-		for(i = 0; i < no_of_terminals; i++) {
-			if(terminals[i] == symbol) 
-				return i;
-		}
-	else
-		for(i = 0; i < no_of_nonterminals; i++) {
-			if(nonterminals[i] == symbol) 
-				return i;
-		}				
-
-	if(flag == 0)
-		printf("Terminal not found in get_pos! (%c)\n", symbol);
-	else
-		printf("Non-terminal not found in get_pos! (%c)\n", symbol);
-}
-
 int main() {
 
-	start();	//Compute closure and goto.
+	start();	
 	return 0;
 }
