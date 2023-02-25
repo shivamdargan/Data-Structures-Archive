@@ -1,3 +1,7 @@
+//Made By: Shivam Dargan
+//CSBS-1 
+// 102018021
+//Autokey Cipher
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

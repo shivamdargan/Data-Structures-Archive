@@ -1,5 +1,6 @@
-// AUTHOR : SHIVAM DARGAN
-// LANGAUGE : CPP
+//Made By: Shivam Dargan
+//CSBS-1 
+// 102018021
 //Vignere Cipher
 #include <bits/stdc++.h>
 using namespace std;

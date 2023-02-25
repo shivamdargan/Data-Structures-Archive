@@ -1,6 +1,7 @@
-// AUTHOR : SHIVAM DARGAN
-// LANGAUGE : CPP
-// Playfair Cipher
+//Made By: Shivam Dargan
+//CSBS-1 
+// 102018021
+//Playfair Cipher
 #include <bits/stdc++.h>
 using namespace std;
 
